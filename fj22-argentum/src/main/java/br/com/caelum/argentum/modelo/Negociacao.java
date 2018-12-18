@@ -8,8 +8,8 @@ public final class Negociacao {
 	private final Calendar data;
 
 	public Negociacao(double preco, int quantidade, Calendar data) {
-		if(data==null){
-			throw new IllegalArgumentException("A data não pode ser nula" );
+		if (data == null) {
+			throw new IllegalArgumentException("A data não pode ser nula");
 		}
 		this.preco = preco;
 		this.quantidade = quantidade;
@@ -30,6 +30,13 @@ public final class Negociacao {
 
 	public Calendar getData() {
 		return (Calendar) this.data.clone();
+	}
+
+	public boolean isMesmoDia(Calendar outraData) {
+		return data.get(Calendar.DAY_OF_MONTH) == outraData
+				.get(Calendar.DAY_OF_MONTH)
+				&& data.get(Calendar.MONTH) == outraData.get(Calendar.MONTH)
+				&& data.get(Calendar.YEAR) == outraData.get(Calendar.YEAR);
 	}
 
 }

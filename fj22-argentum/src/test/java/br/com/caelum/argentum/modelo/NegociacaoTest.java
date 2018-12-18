@@ -1,6 +1,7 @@
 package br.com.caelum.argentum.modelo;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,6 +25,46 @@ public class NegociacaoTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void naoCriaNegociacaoComDataNula() {
 		new Negociacao(10, 5, null);
+	}
+
+	@Test
+	public void mesmoMilissegundoEhDoMesmoDia() {
+		Calendar agora = Calendar.getInstance();
+		Calendar mesmoMomento = (Calendar) agora.clone();
+
+		Negociacao negociacao = new Negociacao(40.0, 100, agora);
+		Assert.assertTrue(negociacao.isMesmoDia(mesmoMomento));
+	}
+
+	@Test
+	public void comHorariosDiferentesEhNoMesmoDia() {
+		// usando GregorianCalendar(ano, mes, dia, hora, minuto)
+		Calendar manha = new GregorianCalendar(2011, 10, 20, 8, 30);
+		Calendar tarde = new GregorianCalendar(2011, 10, 20, 15, 30);
+
+		Negociacao negociacao = new Negociacao(40.0, 100, manha);
+		Assert.assertTrue(negociacao.isMesmoDia(tarde));
+	}
+
+	@Test
+	public void mesmoDiaMasMesesDiferentesNaoSaoDoMesmoDia() {
+		// usando GregorianCalendar(ano, mes, dia, hora, minuto)
+		Calendar janeiro = new GregorianCalendar(2011, 1, 20, 8, 30);
+		Calendar fevereiro = new GregorianCalendar(2011, 2, 20, 15, 30);
+
+		Negociacao negociacao = new Negociacao(40.0, 100, janeiro);
+		Assert.assertFalse(negociacao.isMesmoDia(fevereiro));
+	}
+
+	@Test
+	public void mesmoDiaEMesMasAnosDiferentesNaoSaoDoMesmoDia() {
+		// usando GregorianCalendar(ano, mes, dia, hora, minuto)
+		Calendar ano2010 = new GregorianCalendar(2010, 10, 20, 8, 30);
+		Calendar ano2011 = new GregorianCalendar(2011, 10, 20, 15, 30);
+
+		Negociacao negociacao = new Negociacao(40.0, 100, ano2010);
+		Assert.assertFalse(negociacao.isMesmoDia(ano2011));
+
 	}
 
 }
